@@ -24,5 +24,6 @@ export default {
 
 body {
   background-color: $bodyBackground;
+  height: 100vh;
 }
 </style>
