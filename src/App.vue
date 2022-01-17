@@ -23,6 +23,7 @@ export default {
 @import "./assets/scss/style.scss";
 
 body {
+  height: 100vh;
   background-color: $bodyBackground;
 }
 </style>
