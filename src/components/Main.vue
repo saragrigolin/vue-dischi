@@ -1,95 +1,49 @@
 <template>
   <div class="container-60 my-5">
 		<div class="row row-cols-5">
-			<div class="col">
-				<div class="spotify-card">
-					<img class="p-3" src="https://www.onstageweb.com/wp-content/uploads/2018/09/bon-jovi-new-jersey.jpg" alt="">
-					<span class="title">new jersy</span>
-					<span class="subtitle">Bon Jovi</span>
-					<span class="year">1988</span>
-				</div>
-			</div>
-			<div class="col">
-				<div class="spotify-card">
-					<img class="p-3" src="https://www.onstageweb.com/wp-content/uploads/2018/09/bon-jovi-new-jersey.jpg" alt="">
-					<span class="title">new jersy</span>
-					<span class="subtitle">Bon Jovi</span>
-					<span class="year">1988</span>
-				</div>
-			</div>
-			<div class="col">
-				<div class="spotify-card">
-					<img class="p-3" src="https://www.onstageweb.com/wp-content/uploads/2018/09/bon-jovi-new-jersey.jpg" alt="">
-					<span class="title">new jersy</span>
-					<span class="subtitle">Bon Jovi</span>
-					<span class="year">1988</span>
-				</div>
-			</div>
-			<div class="col">
-				<div class="spotify-card">
-					<img class="p-3" src="https://www.onstageweb.com/wp-content/uploads/2018/09/bon-jovi-new-jersey.jpg" alt="">
-					<span class="title">new jersy</span>
-					<span class="subtitle">Bon Jovi</span>
-					<span class="year">1988</span>
-				</div>
-			</div>
-			<div class="col">
-				<div class="spotify-card">
-					<img class="p-3" src="https://www.onstageweb.com/wp-content/uploads/2018/09/bon-jovi-new-jersey.jpg" alt="">
-					<span class="title">new jersy</span>
-					<span class="subtitle">Bon Jovi</span>
-					<span class="year">1988</span>
-				</div>
-			</div>
-			<div class="col">
-				<div class="spotify-card">
-					<img class="p-3" src="https://www.onstageweb.com/wp-content/uploads/2018/09/bon-jovi-new-jersey.jpg" alt="">
-					<span class="title">new jersy</span>
-					<span class="subtitle">Bon Jovi</span>
-					<span class="year">1988</span>
-				</div>
-			</div>
-			<div class="col">
-				<div class="spotify-card">
-					<img class="p-3" src="https://www.onstageweb.com/wp-content/uploads/2018/09/bon-jovi-new-jersey.jpg" alt="">
-					<span class="title">new jersy</span>
-					<span class="subtitle">Bon Jovi</span>
-					<span class="year">1988</span>
-				</div>
-			</div>
-			<div class="col">
-				<div class="spotify-card">
-					<img class="p-3" src="https://www.onstageweb.com/wp-content/uploads/2018/09/bon-jovi-new-jersey.jpg" alt="">
-					<span class="title">new jersy</span>
-					<span class="subtitle">Bon Jovi</span>
-					<span class="year">1988</span>
-				</div>
-			</div>
-			<div class="col">
-				<div class="spotify-card">
-					<img class="p-3" src="https://www.onstageweb.com/wp-content/uploads/2018/09/bon-jovi-new-jersey.jpg" alt="">
-					<span class="title">new jersy</span>
-					<span class="subtitle">Bon Jovi</span>
-					<span class="year">1988</span>
-				</div>
-			</div>
-			<div class="col">
-				<div class="spotify-card">
-					<img class="p-3" src="https://www.onstageweb.com/wp-content/uploads/2018/09/bon-jovi-new-jersey.jpg" alt="">
-					<span class="title">new jersy</span>
-					<span class="subtitle">Bon Jovi</span>
-					<span class="year">1988</span>
-				</div>
-			</div>
+			<Card 
+			v-for="(card, index) in cards" :key="index" :image="card.poster" :name="card.title" :title="card.title" :artist="card.author" :year="card.year"/>
 		</div>
 	</div>
 </template>
 
 <script>
-// import axios from 'axios';
+import axios from 'axios';
+import Card from './Card.vue';
+
+    // "response": [
+    //     {
+    //         "poster": "https://www.onstageweb.com/wp-content/uploads/2018/09/bon-jovi-new-jersey.jpg",
+    //         "title": "New Jersey",
+    //         "author": "Bon Jovi",
+    //         "genre": "Rock",
+    //         "year": "1988"
+    //     },
 
 export default {
   name: "Main",
+	components: {
+		Card,
+	},
+	data() {
+		return {
+			cards: null,
+		}
+	},
+	mounted() {
+		this.getCards();
+	},
+	methods: {
+		getCards() {
+			axios.get('https://flynn.boolean.careers/exercises/api/array/music')
+			.then((result) => {
+				this.cards = result.data.response;
+			})
+			.catch((error) => {
+				console.log(error);
+			})
+		}
+	}
 }
 </script>
 
@@ -102,22 +56,6 @@ export default {
 	.col {
 		padding: 0.5em 1em;
 	}
-	.spotify-card {
-		background-color: $headerBackground;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		img {
-			width: 100%;
-		}
-		.title {
-			text-transform: uppercase;
-			color: white;
-			font-weight: 500;
-		}
-		.subtitle, .year {
-			color: $spanColor;
-		}
-	}
+	
 }
 </style>
