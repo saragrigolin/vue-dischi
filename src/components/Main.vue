@@ -1,10 +1,15 @@
 <template>
-  <div class="container-60 my-5">
-		<div class="row row-cols-5">
-			<Card 
-			v-for="(card, index) in cards" :key="index" :image="card.poster" :name="card.title" :title="card.title" :artist="card.author" :year="card.year"/>
+	<main>
+		<div class="container-60 my-5">
+			<div v-if="cards" class="row row-cols-5">
+				<Card 
+				v-for="(card, index) in cards" :key="index" :image="card.poster" :name="card.title" :title="card.title" :artist="card.author" :year="card.year"/>
+			</div>
+			<div v-else class="loading">
+				<h1>Loading...</h1>
+			</div>
 		</div>
-	</div>
+	</main>
 </template>
 
 <script>
@@ -31,7 +36,9 @@ export default {
 		}
 	},
 	mounted() {
-		this.getCards();
+		setTimeout(() => {
+			this.getCards()
+		}, 1000);
 	},
 	methods: {
 		getCards() {
@@ -50,12 +57,18 @@ export default {
 
 <style lang="scss">
 @import "../assets/scss/style.scss";
-.container-60 {
-	width: 60%;
-	margin: auto;
-	.col {
-		padding: 0.5em 1em;
+main {
+	.container-60 {
+		width: 60%;
+		margin: auto;
+		.col {
+			padding: 0.5em 1em;
+		}
+		.loading {
+			color: white;
+			display: flex;
+			justify-content: center;
+		}
 	}
-	
 }
 </style>
