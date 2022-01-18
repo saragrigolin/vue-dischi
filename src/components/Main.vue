@@ -12,9 +12,9 @@
 					</select>
 				</div>
 			</div>
-			<div v-if="cards" class="row row-cols-5">
+			<div v-if="filteredCards" class="row row-cols-5">
 				<Card 
-				v-for="(card, index) in cards" :key="index" :image="card.poster" :name="card.title" :title="card.title" :artist="card.author" :year="card.year"/>
+				v-for="(card, index) in filteredCards" :key="index" :image="card.poster" :name="card.title" :title="card.title" :artist="card.author" :year="card.year"/>
 			</div>
 			<div v-else class="loading">
 				<h1>Loading...</h1>
@@ -43,41 +43,43 @@ export default {
 	},
 	data() {
 		return {
-			cards: null,
+			filteredCards: null,
 			selectedGenre: 'all',
+			arrayOriginal: null,
 		}
 	},
 	mounted() {
 		setTimeout(() => {
-			axios.get('https://flynn.boolean.careers/exercises/api/array/music')
-			.then((result) => {
-				this.cards = result.data.response;
-			})
-			.catch((error) => {
-				console.log(error);
-			})
+			this.getCards();
 		}, 1000);
 	},
+	computed: {
+	},
 	methods: {
-		filterCards() {
+		getCards () {
 			axios.get('https://flynn.boolean.careers/exercises/api/array/music')
 			.then((result) => {
-				//faccio vedere tutti gli album
-				let albumArray = result.data.response;
-
-				//se seleziono un genere diverso
-				if (this.selectedGenre !== 'all') {
-					albumArray = albumArray.filter(album => album.genre.toLowerCase()  === this.selectedGenre);
-				}
-				this.cards = albumArray;
-				console.log(this.cards);
+				this.arrayOriginal = result.data.response;
+				this.filteredCards = result.data.response;
+				
 			})
 			.catch((error) => {
 				console.log(error);
 			})
-		}
-	},
+		},
+		filterCards() {
+			//faccio vedere tutti gli album
+			this.filteredCards = this.arrayOriginal;
 
+			//se seleziono un genere diverso
+			if (this.selectedGenre !== 'all') {
+				this.filteredCards = this.filteredCards.filter(album => album.genre.toLowerCase()  === this.selectedGenre);
+			} else {
+				return this.filteredCards;
+			}
+			return this.filteredCards;
+		}
+	}
 }
 </script>
 
